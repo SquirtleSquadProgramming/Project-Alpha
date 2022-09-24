@@ -29,7 +29,7 @@ public class PlayerMove : MonoBehaviour
         playerCamera.transform.rotation = Quaternion.Euler(
             new Vector3(
                 anglesY + PlayerData.MouseSensitivity.y * Input.GetAxis("Mouse Y") * -1f,
-                player.transform.rotation.y
+                player.transform.rotation.eulerAngles.y
             )
         );
     }
