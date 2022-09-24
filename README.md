@@ -1,2 +1,2 @@
-# Project-Alpha
+# Project α
 Γ
