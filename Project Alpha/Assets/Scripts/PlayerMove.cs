@@ -22,12 +22,12 @@ public class PlayerMove : MonoBehaviour
         player.transform.Rotate(
             new Vector3(
                 0,
-                PlayerData.MouseSensitivity.x * Input.GetAxis("Mouse X")
+                PlayerData.MouseSensitivity.x / 100 * Input.GetAxis("Mouse X")
             )
         );
         playerCamera.transform.Rotate(
             new Vector3(
-                -PlayerData.MouseSensitivity.y * Input.GetAxis("Mouse Y"),
+                -PlayerData.MouseSensitivity.y / 100 * Input.GetAxis("Mouse Y"),
                 0
             )
         );
@@ -49,10 +49,12 @@ public class PlayerMove : MonoBehaviour
                 prevInputs.x * (float)Math.Sin(-theta) + prevInputs.y * (float)Math.Cos(theta)), ForceMode.Force);
         prevInputs = new Vector2(0f, 0f);
     }
+
     void FixedUpdate()
     {
         MovePlayer();
     }
+
     void Update()
     {
         prevInputs += new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")) * Time.deltaTime;
