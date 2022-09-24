@@ -4,7 +4,7 @@ public class PlayerMove : MonoBehaviour
 {
     GameObject player;
     Camera playerCamera;
-    public (float,float) sensitivity = (1.0f,1.0f); //X,Y
+    public (float,float) sensitivity = (1f,1f); //X,Y
     // Start is called before the first frame update
     void Start()
     {
@@ -22,10 +22,11 @@ public class PlayerMove : MonoBehaviour
     void UpdateCamera()
     {
         Vector3 angles = playerCamera.transform.rotation.eulerAngles;
-        player.transform.rotation = Quaternion.Euler(angles + new Vector3(sensitivity.Item2 * Input.GetAxis("Mouse Y"), sensitivity.Item1 * Input.GetAxis("Mouse X"),0.0f));
+        Debug.Log(Input.GetAxis("Mouse X"));
+        player.transform.rotation = Quaternion.Euler(angles + new Vector3(sensitivity.Item2 * Input.GetAxis("Mouse Y") * -1f, sensitivity.Item1 * Input.GetAxis("Mouse X"),0f));
     }
     void Update()
     {
-        
+        UpdateCamera();
     }
 }
