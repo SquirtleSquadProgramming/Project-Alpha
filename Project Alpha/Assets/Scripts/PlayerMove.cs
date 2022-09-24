@@ -44,9 +44,9 @@ public class PlayerMove : MonoBehaviour
         
         rb.AddForce(
             speed * new Vector3(
-                prevInputs.x * (float)Math.Cos(theta) + prevInputs.y * (float)Math.Sin(theta),
+                prevInputs.x * (float)Math.Cos(-theta) + prevInputs.y * (float)Math.Sin(theta),
                 0f,
-                prevInputs.x * (float)Math.Sin(theta) + prevInputs.y * (float)Math.Cos(theta)), ForceMode.Force);
+                prevInputs.x * (float)Math.Sin(-theta) + prevInputs.y * (float)Math.Cos(theta)), ForceMode.Force);
         prevInputs = new Vector2(0f, 0f);
     }
     void FixedUpdate()
