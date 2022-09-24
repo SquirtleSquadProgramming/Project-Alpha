@@ -4,7 +4,6 @@ public class PlayerMove : MonoBehaviour
 {
     GameObject player;
     public Camera playerCamera;
-    public GameObject body;
 
     // Start is called before the first frame update
     void Start()
@@ -26,7 +25,8 @@ public class PlayerMove : MonoBehaviour
 
     void MovePlayer()
     {
-        Vector3 currentVelocity = body.GetComponent<Rigidbody>().velocity;
+        Vector3 currentVelocity = player.GetComponent<Rigidbody>().velocity;
+        
     }
 
     // Update is called once per frame
