@@ -19,17 +19,16 @@ public class PlayerMove : MonoBehaviour
 
     void UpdateCamera()
     {
-        float anglesX = player.transform.rotation.eulerAngles.y;
-        float anglesY = playerCamera.transform.rotation.eulerAngles.x;
-        player.transform.rotation = Quaternion.Euler(
+        player.transform.Rotate(
             new Vector3(
-                0f,
-                anglesX + PlayerData.MouseSensitivity.x * Input.GetAxis("Mouse X"))
-            );
-        playerCamera.transform.rotation = Quaternion.Euler(
+                0,
+                PlayerData.MouseSensitivity.x * Input.GetAxis("Mouse X")
+            )
+        );
+        playerCamera.transform.Rotate(
             new Vector3(
-                anglesY + PlayerData.MouseSensitivity.y * Input.GetAxis("Mouse Y") * -1f,
-                player.transform.rotation.eulerAngles.y
+                -PlayerData.MouseSensitivity.y * Input.GetAxis("Mouse Y"),
+                0
             )
         );
     }
