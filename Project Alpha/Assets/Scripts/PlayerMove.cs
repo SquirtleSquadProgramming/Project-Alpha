@@ -7,7 +7,8 @@ public class PlayerMove : MonoBehaviour
     GameObject player;
     Rigidbody rb;
     public Camera playerCamera;
-    public float speed = 100.0f;
+    public float speed = 1000.0f;
+    public float maxVel = 1.0f;
     Vector2 prevInputs; //make movement feel not garbage
 
     // Start is called before the first frame update
@@ -37,11 +38,13 @@ public class PlayerMove : MonoBehaviour
     {
         Vector3 currentVelocity = rb.velocity;
         float theta = player.transform.rotation.eulerAngles.y * (float)Math.PI / 180f;
-        Vector3 rotatedVelocity = new Vector3(
-            currentVelocity.x * (float)Math.Sin(theta) + currentVelocity.y * (float)Math.Cos(theta),
-            currentVelocity.x * (float)Math.Cos(theta) + currentVelocity.y * (float)Math.Sin(theta),
-            currentVelocity.z);
-        
+        /*
+        represents the player relative left-right forward-backwards velocity multipliers
+        they are calculated as velocity by (min((1-1/(1+abs(velocityInDirection*coef1))+coef2),1)-coef2)*(1/(1-coef2))
+        */
+        Vector3 rotatedVelocity = Quaternion.Euler(new Vector3(0f,theta,0f)) * currentVelocity;
+        Vector3 velocityMultipliers = new Vector3();
+
         rb.AddForce(
             speed * new Vector3(
                 prevInputs.x * (float)Math.Cos(-theta) + prevInputs.y * (float)Math.Sin(theta),
