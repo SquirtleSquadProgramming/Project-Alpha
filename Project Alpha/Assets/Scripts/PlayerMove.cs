@@ -18,6 +18,8 @@ public class PlayerMove : MonoBehaviour
         PlayerData.MouseSensitivity = new Vector2(100f,100f);
         player = gameObject;
         rb = player.GetComponent<Rigidbody>();
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     void UpdateCamera()
@@ -55,6 +57,9 @@ public class PlayerMove : MonoBehaviour
             VelocityScale(rotatedVelocity.x),
             VelocityScale(rotatedVelocity.z)
         );
+        Debug.Log("Mul: " + velocityMultipliers.ToString());
+        Debug.Log("In:  " +  (speed *  prevInputs).ToString());
+        // velocityMultipliers = new Vector2(1f,1f);
 
         Vector3 move = speed * new Vector3(
             prevInputs.x * (float)Math.Cos(-theta) * velocityMultipliers.x + prevInputs.y * (float)Math.Sin(theta) * velocityMultipliers.y,
@@ -64,8 +69,7 @@ public class PlayerMove : MonoBehaviour
         // Debug.Log(rotatedVelocity);
         // Debug.Log("Normal:  " + currentVelocity.ToString());
         // Debug.Log("Rotated: " + rotatedVelocity.ToString());
-        Debug.Log("Mul: " + velocityMultipliers.ToString());
-        Debug.Log("In:  " +  prevInputs.ToString());
+        
         rb.AddForce(
             move
             , ForceMode.Force);
