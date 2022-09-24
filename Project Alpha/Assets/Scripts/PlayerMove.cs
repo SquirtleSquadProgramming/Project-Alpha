@@ -20,7 +20,7 @@ public class PlayerMove : MonoBehaviour
     void UpdateCamera()
     {
         float anglesX = player.transform.rotation.eulerAngles.y;
-        float anglesY = player.transform.rotation.eulerAngles.x;
+        float anglesY = playerCamera.transform.rotation.eulerAngles.x;
         player.transform.rotation = Quaternion.Euler(
             new Vector3(
                 0f,
@@ -28,7 +28,7 @@ public class PlayerMove : MonoBehaviour
             );
         playerCamera.transform.rotation = Quaternion.Euler(
             new Vector3(
-                PlayerData.MouseSensitivity.y * Input.GetAxis("Mouse Y") * -1f,
+                anglesY + PlayerData.MouseSensitivity.y * Input.GetAxis("Mouse Y") * -1f,
                 player.transform.rotation.y
             )
         );
