@@ -11,7 +11,7 @@ public class PlayerMove : MonoBehaviour
     public float velocityScaling = 1f; //coef1
     public float maxVel = 0.3f; //coef2
     Vector2 prevInputs; //make movement feel not garbage
-
+    
     // Start is called before the first frame update
     void Start()
     {
