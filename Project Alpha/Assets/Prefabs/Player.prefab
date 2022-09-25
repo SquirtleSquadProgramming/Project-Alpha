@@ -364,7 +364,7 @@ MonoBehaviour:
   velocityScaling: 0.5
   maxVel: 5
   grounded: 0
-  jumpStrength: 8
+  jumpStrength: 24
   gravity: 8
   groundedDrag: 10
   counterStrafeMultiplier: 5
