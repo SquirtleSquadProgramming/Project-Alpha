@@ -16,9 +16,10 @@ public class PlayerMove : MonoBehaviour
     public bool grounded = false;
     bool groundedPrevious;
     int jumping = 0; //reverse coyote time
-    float jumpStrength = 8f;
-    float gravity = 8f;
+    public float jumpStrength = 8f;
+    public float gravity = 8f;
     public float groundedDrag = 6f;
+    public float counterStrafeMultiplier = 5.0f;
     //FIXME: non public variables for stuff when done
     // Start is called before the first frame update
     void Start()
@@ -65,12 +66,12 @@ public class PlayerMove : MonoBehaviour
         //let the player stop
         if (Math.Sign(rotatedVelocity.x) != Math.Sign(prevInputs.x))
         {
-            velocityMultipliers.x = 2;
+            velocityMultipliers.x = counterStrafeMultiplier;
         }
 
         if (Math.Sign(rotatedVelocity.z) != Math.Sign(prevInputs.y))
         {
-            velocityMultipliers.y = 2;
+            velocityMultipliers.y = counterStrafeMultiplier;
         }
 
         Vector3 move = (grounded && groundedPrevious ? groundedSpeed : speed) * new Vector3(
