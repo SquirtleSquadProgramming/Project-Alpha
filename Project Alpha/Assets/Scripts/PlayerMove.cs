@@ -7,15 +7,23 @@ public class PlayerMove : MonoBehaviour
     GameObject player;
     Rigidbody rb;
     public Camera playerCamera;
+    public GameObject jumpCollider;
     public float speed = 5000.0f;
+    public float groundedSpeed = 5000.0f;
     public float velocityScaling = 1f; //coef1
     public float maxVel = 0.3f; //coef2
     Vector2 prevInputs; //make movement feel not garbage
-    
+    public bool grounded = false;
+    bool groundedPrevious;
+    int jumping = 0; //reverse coyote time
+    float jumpStrength = 8f;
+    float gravity = 8f;
+    public float groundedDrag = 6f;
+    //FIXME: non public variables for stuff when done
     // Start is called before the first frame update
     void Start()
     {
-        PlayerData.MouseSensitivity = new Vector2(100f,100f);
+        PlayerData.MouseSensitivity = new Vector2(100f, 100f);
         player = gameObject;
         rb = player.GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked;
@@ -27,19 +35,19 @@ public class PlayerMove : MonoBehaviour
         player.transform.Rotate(
             new Vector3(
                 0,
-                PlayerData.MouseSensitivity.x / 100 * Input.GetAxis("Mouse X")
+                PlayerData.MouseSensitivity.x / 50 * Input.GetAxis("Mouse X")
             )
         );
         playerCamera.transform.Rotate(
             new Vector3(
-                -PlayerData.MouseSensitivity.y / 100 * Input.GetAxis("Mouse Y"),
+                -PlayerData.MouseSensitivity.y / 50 * Input.GetAxis("Mouse Y"),
                 0
             )
         );
     }
     float VelocityScale(float directional)
     {
-        return Math.Max(0,Math.Min(1,maxVel-Math.Abs(directional)*velocityScaling));
+        return Math.Max(0, Math.Min(1, maxVel - Math.Abs(directional) * velocityScaling));
         //\max\left(0,\min\left(1,b-\left|cx\right|\right)\right)
         // return 1-(Math.Min((1-1/(1+Math.Abs(directional*velocityScaling))+maxVel),1)-maxVel)*(1/(1-maxVel)); //https://www.desmos.com/calculator/srjtyzbiiv
     }
@@ -48,58 +56,69 @@ public class PlayerMove : MonoBehaviour
     {
         Vector3 currentVelocity = rb.velocity;
         float theta = player.transform.rotation.eulerAngles.y * (float)Math.PI / 180f;
-        /*
-        represents the player relative left-right forward-backwards velocity multipliers
-        they are calculated as velocity by (min((1-1/(1+abs(velocityInDirection*coef1))+coef2),1)-coef2)*(1/(1-coef2))
-        */
-        // Debug.Log(Time.time*10);
-        // Debug.Log(Quaternion.Euler(new Vector3(0f,Time.time*10,0f)) * new Vector3(1f,0f,0f));
-        Vector3 rotatedVelocity = Quaternion.Euler(0f,-theta * 180 / (float)Math.PI,0f) * currentVelocity;
+        // represents the player relative left-right forward-backwards velocity multipliers
+        Vector3 rotatedVelocity = Quaternion.Euler(0f, -theta * 180 / (float)Math.PI, 0f) * currentVelocity;
         Vector2 velocityMultipliers = new Vector2(
             VelocityScale(rotatedVelocity.x),
             VelocityScale(rotatedVelocity.z)
         );
         //let the player stop
-        for (int i = 0; i < 10; i++)
+        if (Math.Sign(rotatedVelocity.x) != Math.Sign(prevInputs.x))
         {
-            Debug.Log("");
+            velocityMultipliers.x = 2;
         }
-        if(Math.Sign(rotatedVelocity.x) != Math.Sign(prevInputs.x))
+
+        if (Math.Sign(rotatedVelocity.z) != Math.Sign(prevInputs.y))
         {
-            velocityMultipliers.x = 1;
-            Debug.Log("CounterStarfex");
+            velocityMultipliers.y = 2;
         }
-        if(Math.Sign(rotatedVelocity.z) != Math.Sign(prevInputs.y))
-        {
-            velocityMultipliers.y = 1;
-            Debug.Log("CounterStarfey");
-        }
-        // Debug.Log("rot: " + rotatedVelocity.x.ToString());
-        // Debug.Log("des:  " +  (speed *  prevInputs.x).ToString());
-        // velocityMultipliers = new Vector2(1f,1f);
-        Vector3 move = speed * new Vector3(
+
+        Vector3 move = (grounded && groundedPrevious ? groundedSpeed : speed) * new Vector3(
             prevInputs.x * (float)Math.Cos(-theta) * velocityMultipliers.x + prevInputs.y * (float)Math.Sin(theta) * velocityMultipliers.y,
             0f,
             prevInputs.x * (float)Math.Sin(-theta) * velocityMultipliers.x + prevInputs.y * (float)Math.Cos(theta) * velocityMultipliers.y
         );
-        // Debug.Log(rotatedVelocity);
-        // Debug.Log("Normal:  " + currentVelocity.ToString());
-        // Debug.Log("Rotated: " + rotatedVelocity.ToString());
-        
-        rb.AddForce(
-            move
-            , ForceMode.Force);
+        rb.AddForce(move, ForceMode.Force);
+
+        if (jumping > 0 && grounded)
+        {
+            Vector3 velocity = rb.velocity;
+            velocity.y = jumpStrength;
+            rb.velocity = velocity;
+            jumping = 0;
+        }
+
+        if (grounded && groundedPrevious)
+        {
+            rb.drag = groundedDrag;
+        }
+        else
+        {
+            rb.drag = 0;
+        }
+        groundedPrevious = grounded; //bhop = 0 drag
+
         prevInputs = new Vector2(0f, 0f);
+        jumping -= 1;
+    }
+    void Gravity()
+    {
+        rb.AddForce(0f, -gravity, 0f, ForceMode.Force);
     }
 
     void FixedUpdate()
     {
         MovePlayer();
+        Gravity();
     }
 
     void Update()
     {
         prevInputs += new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")) * Time.deltaTime;
+        if (Input.GetKey(KeyCode.Space))
+        {
+            jumping = 3;
+        }
         UpdateCamera();
     }
 }
