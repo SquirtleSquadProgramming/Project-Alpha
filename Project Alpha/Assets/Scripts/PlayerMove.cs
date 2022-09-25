@@ -14,9 +14,10 @@ public class PlayerMove : MonoBehaviour
     Vector2 prevInputs; //make movement feel not garbage
     public bool grounded = false;
     bool groundedPrevious;
-    int jumping = 0;
+    int jumping = 0; //reverse coyote time
     float jumpStrength = 8f;
     float gravity = 8f;
+    float groundedDrag = 3f;
     //FIXME: non public variables for stuff when done
     // Start is called before the first frame update
     void Start()
@@ -85,6 +86,16 @@ public class PlayerMove : MonoBehaviour
             rb.velocity = velocity;
             jumping = 0;
         }
+
+        if(grounded && groundedPrevious)
+        {
+            rb.drag = groundedDrag;
+        }
+        else
+        {
+            rb.drag = 0;
+        }
+        groundedPrevious = grounded; //bhop = 0 drag
 
         prevInputs = new Vector2(0f, 0f);
         jumping -= 1;
