@@ -39,7 +39,8 @@ public class PlayerMove : MonoBehaviour
     }
     float VelocityScale(float directional)
     {
-        return Math.Abs(directional) > maxVel ? Math.Max(0,maxVel-directional) : 1;
+        return Math.Max(0,Math.Min(1,maxVel-Math.Abs(directional)*velocityScaling));
+        //\max\left(0,\min\left(1,b-\left|cx\right|\right)\right)
         // return 1-(Math.Min((1-1/(1+Math.Abs(directional*velocityScaling))+maxVel),1)-maxVel)*(1/(1-maxVel)); //https://www.desmos.com/calculator/srjtyzbiiv
     }
 
@@ -65,12 +66,12 @@ public class PlayerMove : MonoBehaviour
         }
         if(Math.Sign(rotatedVelocity.x) != Math.Sign(prevInputs.x))
         {
-            velocityMultipliers.x = 3;
-            // Debug.Log("CounterStarfex");
+            velocityMultipliers.x = 1;
+            Debug.Log("CounterStarfex");
         }
         if(Math.Sign(rotatedVelocity.z) != Math.Sign(prevInputs.y))
         {
-            velocityMultipliers.y = 3;
+            velocityMultipliers.y = 1;
             Debug.Log("CounterStarfey");
         }
         // Debug.Log("rot: " + rotatedVelocity.x.ToString());
