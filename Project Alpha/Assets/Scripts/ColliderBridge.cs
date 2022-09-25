@@ -5,14 +5,23 @@ using UnityEngine;
  public class ColliderBridge : MonoBehaviour
  {
     public GameObject player;
-    void OnTriggerStay(Collision collision)
+    bool buffer;
+    void OnTriggerStay(Collider other)
     {
         player.GetComponent<PlayerMove>().grounded = true;
+        buffer = true;
         print("col: " + Time.fixedTime);
     }
     void FixedUpdate()
     {
-        player.GetComponent<PlayerMove>().grounded = false;
+        if(!buffer)
+        {
+            player.GetComponent<PlayerMove>().grounded = false;
+        }
+        else
+        {
+            buffer=false;
+        }
         print("up:  " + Time.fixedTime);
     }
  }

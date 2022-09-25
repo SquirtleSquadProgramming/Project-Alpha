@@ -13,7 +13,11 @@ public class PlayerMove : MonoBehaviour
     public float maxVel = 0.3f; //coef2
     Vector2 prevInputs; //make movement feel not garbage
     public bool grounded = false;
-
+    bool groundedPrevious;
+    int jumping = 0;
+    float jumpStrength = 8f;
+    float gravity = 8f;
+    //FIXME: non public variables for stuff when done
     // Start is called before the first frame update
     void Start()
     {
@@ -48,10 +52,6 @@ public class PlayerMove : MonoBehaviour
 
     void MovePlayer()
     {
-        if (grounded)
-        {
-            Debug.Log("somet");
-        }
         Vector3 currentVelocity = rb.velocity;
         float theta = player.transform.rotation.eulerAngles.y * (float)Math.PI / 180f;
         // represents the player relative left-right forward-backwards velocity multipliers
@@ -76,19 +76,37 @@ public class PlayerMove : MonoBehaviour
             0f,
             prevInputs.x * (float)Math.Sin(-theta) * velocityMultipliers.x + prevInputs.y * (float)Math.Cos(theta) * velocityMultipliers.y
         );
-
         rb.AddForce(move, ForceMode.Force);
+        
+        if(jumping > 0 && grounded)
+        {
+            Vector3 velocity = rb.velocity;
+            velocity.y = jumpStrength;
+            rb.velocity = velocity;
+            jumping = 0;
+        }
+
         prevInputs = new Vector2(0f, 0f);
+        jumping -= 1;
+    }
+    void Gravity()
+    {
+        rb.AddForce(0f,-gravity,0f,ForceMode.Force);
     }
 
     void FixedUpdate()
     {
         MovePlayer();
+        Gravity();
     }
 
     void Update()
     {
         prevInputs += new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")) * Time.deltaTime;
+        if(Input.GetKey(KeyCode.Space))
+        {
+            jumping = 3;
+        }
         UpdateCamera();
     }
 }
