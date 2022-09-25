@@ -530,7 +530,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 436278078}
-  m_Material: {fileID: 13400000, guid: 7060f1ded6085014196c431083b4608f, type: 2}
+  m_Material: {fileID: 13400000, guid: 8d658a7d74d33a84c9bc7a6069a6e34b, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
@@ -576,10 +576,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCamera: {fileID: 1823688466}
   jumpCollider: {fileID: 0}
-  speed: 5000
+  speed: 1500
+  groundedSpeed: 5000
   velocityScaling: 0.5
-  maxVel: 3
+  maxVel: 5
   grounded: 0
+  groundedDrag: 10
 --- !u!1 &892491435
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,6 +9,7 @@ public class PlayerMove : MonoBehaviour
     public Camera playerCamera;
     public GameObject jumpCollider;
     public float speed = 5000.0f;
+    public float groundedSpeed = 5000.0f;
     public float velocityScaling = 1f; //coef1
     public float maxVel = 0.3f; //coef2
     Vector2 prevInputs; //make movement feel not garbage
@@ -17,7 +18,7 @@ public class PlayerMove : MonoBehaviour
     int jumping = 0; //reverse coyote time
     float jumpStrength = 8f;
     float gravity = 8f;
-    float groundedDrag = 3f;
+    public float groundedDrag = 6f;
     //FIXME: non public variables for stuff when done
     // Start is called before the first frame update
     void Start()
@@ -64,22 +65,22 @@ public class PlayerMove : MonoBehaviour
         //let the player stop
         if (Math.Sign(rotatedVelocity.x) != Math.Sign(prevInputs.x))
         {
-            velocityMultipliers.x = 1;
+            velocityMultipliers.x = 2;
         }
 
         if (Math.Sign(rotatedVelocity.z) != Math.Sign(prevInputs.y))
         {
-            velocityMultipliers.y = 1;
+            velocityMultipliers.y = 2;
         }
 
-        Vector3 move = speed * new Vector3(
+        Vector3 move = (grounded && groundedPrevious ? groundedSpeed : speed) * new Vector3(
             prevInputs.x * (float)Math.Cos(-theta) * velocityMultipliers.x + prevInputs.y * (float)Math.Sin(theta) * velocityMultipliers.y,
             0f,
             prevInputs.x * (float)Math.Sin(-theta) * velocityMultipliers.x + prevInputs.y * (float)Math.Cos(theta) * velocityMultipliers.y
         );
         rb.AddForce(move, ForceMode.Force);
-        
-        if(jumping > 0 && grounded)
+
+        if (jumping > 0 && grounded)
         {
             Vector3 velocity = rb.velocity;
             velocity.y = jumpStrength;
@@ -87,7 +88,7 @@ public class PlayerMove : MonoBehaviour
             jumping = 0;
         }
 
-        if(grounded && groundedPrevious)
+        if (grounded && groundedPrevious)
         {
             rb.drag = groundedDrag;
         }
@@ -102,7 +103,7 @@ public class PlayerMove : MonoBehaviour
     }
     void Gravity()
     {
-        rb.AddForce(0f,-gravity,0f,ForceMode.Force);
+        rb.AddForce(0f, -gravity, 0f, ForceMode.Force);
     }
 
     void FixedUpdate()
@@ -114,7 +115,7 @@ public class PlayerMove : MonoBehaviour
     void Update()
     {
         prevInputs += new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")) * Time.deltaTime;
-        if(Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space))
         {
             jumping = 3;
         }
