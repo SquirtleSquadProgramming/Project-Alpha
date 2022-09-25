@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class MenuManager : MonoBehaviour
     void Awake()
     {
         instance = this;
-        
+
         foreach (GameObject Menu in Menus)
             Menu.SetActive(false);
 
@@ -36,10 +37,31 @@ public class MenuManager : MonoBehaviour
                 currentState = MenuState.Paused;
             else currentState = decrement(currentState);
 
-            if (currentState != MenuState.Closed)
+            if (currentState != MenuState.Closed) {
                 Menus[(int)currentState].SetActive(true);
+                Time.timeScale = 0f;
+                Cursor.lockState = CursorLockMode.None;
+            }
+            else {
+                Time.timeScale = 1f;
+                Cursor.lockState = CursorLockMode.Locked;
+            }
         }
     }
+
+    public void SetMenu(int state)
+    {
+        if (currentState != MenuState.Closed)
+            Menus[(int)currentState].SetActive(false);
+        
+        currentState = (MenuState)state;
+        
+        if (currentState != MenuState.Closed)
+            Menus[(int)currentState].SetActive(true);
+    }
+
+    public void Exit() => Application.Quit();
+    public void Play() => SceneManager.LoadScene("Main");
 
     public MenuState decrement(MenuState state)
     {
@@ -54,7 +76,7 @@ public class MenuManager : MonoBehaviour
     }
 }
 
-public enum MenuState: int // Closed must be the last element in the list
+public enum MenuState: int // MenuState.Main always needs to go last.
 {
-    Paused = 0, Main = 1, Closed
+    Closed = -1, Paused = 0, Main
 }  

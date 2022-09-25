@@ -111,22 +111,16 @@ public class PlayerMove : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (Time.timeScale == 0)
-            return;
         if(player.transform.position.y < -25)
         {
             player.transform.position = new Vector3(0f,2f,0f);
         }
-        if (Time.timeScale == 0)
-            return;
         MovePlayer();
         Gravity();
     }
 
     void Update()
     {
-        if (Time.timeScale == 0)
-            return;
         prevInputs += new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")) * Time.deltaTime;
         if (Input.GetKeyDown(KeyCode.Space))
         {

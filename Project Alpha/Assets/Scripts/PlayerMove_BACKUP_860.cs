@@ -111,14 +111,15 @@ public class PlayerMove : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (Time.timeScale == 0)
-            return;
+<<<<<<< HEAD
         if(player.transform.position.y < -25)
         {
             player.transform.position = new Vector3(0f,2f,0f);
         }
+=======
         if (Time.timeScale == 0)
             return;
+>>>>>>> b9dd670c6c43c5f2b7666a7eff3b842c4397983f
         MovePlayer();
         Gravity();
     }

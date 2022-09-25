@@ -7,6 +7,7 @@ public class PlayerMove : MonoBehaviour
     GameObject player;
     Rigidbody rb;
     public Camera playerCamera;
+    public GameObject jumpCollider;
     public float speed = 5000.0f;
     public float groundedSpeed = 5000.0f;
     public float velocityScaling = 1f; //coef1
@@ -82,9 +83,6 @@ public class PlayerMove : MonoBehaviour
 
         if (jumping > 0 && grounded)
         {
-            grounded = false;
-            groundedPrevious = false;
-            rb.drag = 0;
             Vector3 velocity = rb.velocity;
             velocity.y = jumpStrength;
             rb.velocity = velocity;
@@ -111,26 +109,16 @@ public class PlayerMove : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (Time.timeScale == 0)
-            return;
-        if(player.transform.position.y < -25)
-        {
-            player.transform.position = new Vector3(0f,2f,0f);
-        }
-        if (Time.timeScale == 0)
-            return;
         MovePlayer();
         Gravity();
     }
 
     void Update()
     {
-        if (Time.timeScale == 0)
-            return;
         prevInputs += new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")) * Time.deltaTime;
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space))
         {
-            jumping = 5;
+            jumping = 3;
         }
         UpdateCamera();
     }
