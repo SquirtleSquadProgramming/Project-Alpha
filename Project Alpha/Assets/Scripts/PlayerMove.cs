@@ -8,7 +8,7 @@ public class PlayerMove : MonoBehaviour
     Rigidbody rb;
     public Camera playerCamera;
     public float speed = 5000.0f;
-    public float velocityScaling = -0.8f; //coef1
+    public float velocityScaling = 1f; //coef1
     public float maxVel = 0.3f; //coef2
     Vector2 prevInputs; //make movement feel not garbage
 
@@ -39,7 +39,8 @@ public class PlayerMove : MonoBehaviour
     }
     float VelocityScale(float directional)
     {
-        return 1-(Math.Min((1-1/(1+Math.Abs(directional*velocityScaling))+maxVel),1)-maxVel)*(1/(1-maxVel)); //https://www.desmos.com/calculator/srjtyzbiiv
+        return Math.Abs(directional) > maxVel ? Math.Max(0,maxVel-directional) : 1;
+        // return 1-(Math.Min((1-1/(1+Math.Abs(directional*velocityScaling))+maxVel),1)-maxVel)*(1/(1-maxVel)); //https://www.desmos.com/calculator/srjtyzbiiv
     }
 
     void MovePlayer()
@@ -57,10 +58,24 @@ public class PlayerMove : MonoBehaviour
             VelocityScale(rotatedVelocity.x),
             VelocityScale(rotatedVelocity.z)
         );
-        Debug.Log("Mul: " + velocityMultipliers.ToString());
-        Debug.Log("In:  " +  (speed *  prevInputs).ToString());
+        //let the player stop
+        for (int i = 0; i < 10; i++)
+        {
+            Debug.Log("");
+        }
+        if(Math.Sign(rotatedVelocity.x) != Math.Sign(prevInputs.x))
+        {
+            velocityMultipliers.x = 3;
+            // Debug.Log("CounterStarfex");
+        }
+        if(Math.Sign(rotatedVelocity.z) != Math.Sign(prevInputs.y))
+        {
+            velocityMultipliers.y = 3;
+            Debug.Log("CounterStarfey");
+        }
+        // Debug.Log("rot: " + rotatedVelocity.x.ToString());
+        // Debug.Log("des:  " +  (speed *  prevInputs.x).ToString());
         // velocityMultipliers = new Vector2(1f,1f);
-
         Vector3 move = speed * new Vector3(
             prevInputs.x * (float)Math.Cos(-theta) * velocityMultipliers.x + prevInputs.y * (float)Math.Sin(theta) * velocityMultipliers.y,
             0f,
