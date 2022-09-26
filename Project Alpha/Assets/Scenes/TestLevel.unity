@@ -11767,6 +11767,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 93742374754179986, guid: f58c0ac1ac2736d4f8e47405b3278d3c,
         type: 3}
+      propertyPath: airDrag
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 93742374754179986, guid: f58c0ac1ac2736d4f8e47405b3278d3c,
+        type: 3}
       propertyPath: grounded
       value: 1
       objectReference: {fileID: 0}
@@ -11881,7 +11886,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-2266
+  m_Name: pb_Mesh30332
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
