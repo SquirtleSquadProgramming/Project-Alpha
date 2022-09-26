@@ -11750,55 +11750,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 93742374369140346, guid: f58c0ac1ac2736d4f8e47405b3278d3c,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 93742374369140346, guid: f58c0ac1ac2736d4f8e47405b3278d3c,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.95
-      objectReference: {fileID: 0}
     - target: {fileID: 93742374754179986, guid: f58c0ac1ac2736d4f8e47405b3278d3c,
         type: 3}
       propertyPath: speed
-      value: 2500
+      value: 3000
       objectReference: {fileID: 0}
     - target: {fileID: 93742374754179986, guid: f58c0ac1ac2736d4f8e47405b3278d3c,
         type: 3}
       propertyPath: airDrag
-      value: 0.5
+      value: 0.01
       objectReference: {fileID: 0}
-    - target: {fileID: 93742374754179986, guid: f58c0ac1ac2736d4f8e47405b3278d3c,
-        type: 3}
-      propertyPath: grounded
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 93742374754179986, guid: f58c0ac1ac2736d4f8e47405b3278d3c,
-        type: 3}
-      propertyPath: groundedDrag
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 93742374754179986, guid: f58c0ac1ac2736d4f8e47405b3278d3c,
-        type: 3}
-      propertyPath: jumpCollider
-      value: 
-      objectReference: {fileID: 1657074774}
-    - target: {fileID: 93742374754179986, guid: f58c0ac1ac2736d4f8e47405b3278d3c,
-        type: 3}
-      propertyPath: jumpStrength
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 93742374754179986, guid: f58c0ac1ac2736d4f8e47405b3278d3c,
-        type: 3}
-      propertyPath: playerCamera
-      value: 
-      objectReference: {fileID: 1687855122}
     - target: {fileID: 93742374754179986, guid: f58c0ac1ac2736d4f8e47405b3278d3c,
         type: 3}
       propertyPath: groundedSpeed
-      value: 12500
+      value: 25000
       objectReference: {fileID: 0}
     - target: {fileID: 93742374754179989, guid: f58c0ac1ac2736d4f8e47405b3278d3c,
         type: 3}
@@ -11855,12 +11820,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 93742374754179990, guid: f58c0ac1ac2736d4f8e47405b3278d3c,
-        type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 13400000, guid: 8d658a7d74d33a84c9bc7a6069a6e34b,
-        type: 2}
     - target: {fileID: 93742374754180072, guid: f58c0ac1ac2736d4f8e47405b3278d3c,
         type: 3}
       propertyPath: m_Name
@@ -11868,25 +11827,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f58c0ac1ac2736d4f8e47405b3278d3c, type: 3}
---- !u!1 &1657074774 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 93742374369140349, guid: f58c0ac1ac2736d4f8e47405b3278d3c,
-    type: 3}
-  m_PrefabInstance: {fileID: 1578157695}
-  m_PrefabAsset: {fileID: 0}
---- !u!20 &1687855122 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 93742372901195716, guid: f58c0ac1ac2736d4f8e47405b3278d3c,
-    type: 3}
-  m_PrefabInstance: {fileID: 1578157695}
-  m_PrefabAsset: {fileID: 0}
 --- !u!43 &1874365621
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh30332
+  m_Name: pb_Mesh34936
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
