@@ -18,6 +18,7 @@ public class PlayerMove : MonoBehaviour
     public float jumpStrength = 8f;
     public float gravity = 8f;
     public float groundedDrag = 6f;
+    public float airDrag = 0.5f;
     public float counterStrafeMultiplier = 5.0f;
     //FIXME: non public variables for stuff when done
     // Start is called before the first frame update
@@ -91,14 +92,7 @@ public class PlayerMove : MonoBehaviour
             jumping = 0;
         }
 
-        if (grounded && groundedPrevious)
-        {
-            rb.drag = groundedDrag;
-        }
-        else
-        {
-            rb.drag = 0;
-        }
+        rb.drag = grounded && groundedPrevious ? groundedDrag : airDrag;
         groundedPrevious = grounded; //bhop = 0 drag
 
         prevInputs = new Vector2(0f, 0f);
