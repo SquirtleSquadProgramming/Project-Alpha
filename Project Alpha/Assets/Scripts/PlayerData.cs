@@ -6,6 +6,14 @@ public static class PlayerData
 {
     public static SerialisablePlayerData SerialisedPlayer = new SerialisablePlayerData();
 
+    public static float[] SliderValues {
+        get => new float[] { MouseSensitivity.x, MouseSensitivity.y, (float)FieldOfView };
+        set {
+            MouseSensitivity = new Vector2(value[0], value[1]);
+            FieldOfView = (int)value[2];
+        }
+    }
+
     public static Vector2 MouseSensitivity
     {
         get => new Vector2(

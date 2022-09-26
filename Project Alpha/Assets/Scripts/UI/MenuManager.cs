@@ -1,16 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
+    #region Variables
     public static MenuManager instance;
     public static MenuState currentState = MenuState.Closed;
     public GameObject[] Menus;
     public bool isMainMenu = false;
+    private UISliders[] sliders;
+    #endregion
 
-    // Start is called before the first frame update
     void Awake()
     {
         instance = this;
@@ -23,13 +26,22 @@ public class MenuManager : MonoBehaviour
             currentState = MenuState.Main;
             Menus[(int)currentState].SetActive(true);
         }
+
+        List<UISliders> _sliders = new List<UISliders>();
+        foreach (GameObject menu in Menus)
+            foreach (UISliders uislider in menu.GetComponentsInChildren<UISliders>())
+                _sliders.Add(uislider);
+
+        sliders = _sliders.ToArray();
+
+        Refresh();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            ApplySettings();
             if (currentState != MenuState.Closed)
                 Menus[(int)currentState].SetActive(false);
 
@@ -60,8 +72,30 @@ public class MenuManager : MonoBehaviour
             Menus[(int)currentState].SetActive(true);
     }
 
-    public void Exit() => Application.Quit();
-    public void Play() => SceneManager.LoadScene("Main");
+    public void Exit()
+        => Application.Quit();
+    public void Play()
+        => SceneManager.LoadScene("Main");
+
+    public void ApplySettings()
+    {
+        float[] vals = new float[sliders.Length];
+        for (int i = 0; i < sliders.Length; i++)
+            vals[i] = sliders[i].slider.value;
+        PlayerData.SliderValues = vals;
+        Refresh();
+    }
+
+    public void Refresh()
+    {
+        Camera.main.fieldOfView = PlayerData.FieldOfView;
+
+        for (int i = 0; i < sliders.Length; i++)
+        {
+            sliders[i].slider.value = PlayerData.SliderValues[i];
+            sliders[i].UpdateSlider();
+        }
+    }
 
     public MenuState decrement(MenuState state)
     {
